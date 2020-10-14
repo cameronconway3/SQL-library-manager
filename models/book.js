@@ -1,10 +1,19 @@
 'use strict';
-const Sequelize = require('sequelize');
+const { Sequelize, Model } = require('sequelize');
+
+// Connect to a SQLite Database
+const sequelize = new Sequelize({
+    // Specifies the specific version of SQL you're using.
+    dialect: 'sqlite',
+    // Will create a databse in your project named 'movies'.
+    storage: 'movies.db',
+    // Stop SQL logging
+    logging: false
+});
 
 module.exports = sequelize => {
-    class Book extends Sequelize.Model {
-
-    }
+    
+    class Book extends Model {}
     Book.init({
         title: {
             type: Sequelize.STRING,
@@ -23,4 +32,4 @@ module.exports = sequelize => {
     }, { sequelize });
 
     return Book;
-}
+};

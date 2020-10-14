@@ -14,13 +14,12 @@ function asyncHandler(cb){
     }
 }
 
-
-
 // GET /books - Show the full list of books
-router.get("/books", asyncHandler(async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
     // Get all books in database
-    const books = await Book.findAll({ order: [['createdAt', 'DESC']]});
-    res.render()
+    // const books = await Book.findAll({ order: [['createdAt', 'DESC']]});
+    // console.log(books.toJSON());
+    res.render('books/index');
 }));
 
 
