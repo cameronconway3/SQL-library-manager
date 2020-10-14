@@ -1,0 +1,25 @@
+{
+  "name": "techdegree-project-8",
+  "version": "1.0.0",
+  "description": "SQL Library Manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cameronconway3/techdegree-project-8.git"
+  },
+  "author": "Cameron Conway",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cameronconway3/techdegree-project-8/issues"
+  },
+  "homepage": "https://github.com/cameronconway3/techdegree-project-8#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^3.0.0",
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
+  }
+}
