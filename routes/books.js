@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Book = require('../models').Book;
 
+const { Op }= require('sequelize');
+
+
 // Handler function to wrap each route
 function asyncHandler(cb){
     return async(req, res, next) => {
@@ -18,13 +21,46 @@ function asyncHandler(cb){
 router.get('/', asyncHandler(async (req, res) => {
     // Get all books in database
     const books = await Book.findAll({ order: [['createdAt', 'DESC']]});
-    res.render('books/index', {books});
+    res.render('books/index', {books, booksPerPage: 10});
+}));
+
+// POST /books - Shows a list of the books matching the search value
+router.post('/', asyncHandler(async (req, res) => {
+    const books = await Book.findAll({
+        where: {
+            [Op.or]: [
+                {
+                    title: {
+                        [Op.like]: '%' + req.body.search + '%'
+                    },
+                },
+                {
+                    author: {
+                        [Op.like]: '%' + req.body.search + '%'
+                    },
+                },
+                {
+                    genre: {
+                        [Op.like]: '%' + req.body.search+ '%'
+                    },
+                },
+                {
+                    year: {
+                        [Op.like]: '%' + req.body.search + '%'
+                    },
+                }
+            ]
+        } 
+    })
+    const totalBooks = await Book.findAll({})
+    res.render('books/index', {books, searchedBooks: books.length, totalBooks: totalBooks.length})
+  
 }));
 
 
 // GET /books/new - Show the create new book form
 router.get('/new', (req, res) => {
-    res.render('books/new-book', {book: Book.create(), title: 'Book'})
+    res.render('books/new-book', {book: Book.create(), title: 'New Book'})
 });
 
 // POST /books/new - Posts a new book to the database
@@ -32,12 +68,13 @@ router.post('/new', asyncHandler(async (req, res) => {
     let book;
     try {
         book = await Book.create(req.body);
-        res.redirect('/');
+        res.redirect(`/books/${book.id}`);
     } catch (err) {
-        if (err.name === 'SequelizeValidationError') {
+        if (err.name === "SequelizeValidationError") {
             book = await Book.build(req.body);
-            res.render('books/new-book', {book, err: err.err, title: 'New Book' })
+            res.render("books/new-book", {book, err: err.errors, title: "New Book" })
         } else {
+            console.log("thowing errror")
             throw err;
         }
     }
@@ -49,9 +86,9 @@ router.get('/:id', asyncHandler(async (req, res) => {
     if(book) {
         res.render('books/update-book', {book, title: 'Update Book'})
     } else {
-        const err = new Error("The book with that ID does not exist.");
+        const err = new Error("We can't seem to find the page you're looking for.");
         err.status = 404;
-        next(err);
+        throw err;
     }
 }));
 
@@ -89,7 +126,7 @@ router.post('/:id/delete', asyncHandler(async (req ,res) => {
         err.status = 500;
         throw err;
     }
-  }));
+}));
 
 
 module.exports = router;
