@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    form(action="/books/new", method="post")
+    form(action=`/books/${book.id}` method='post')
         p
             label(for='title') Title
             input#title(name='title' type='text' value=book.title)
@@ -15,6 +15,9 @@ block content
             label(for='year') Year
             input#year(name='year' type='text' value=book.year)
         p
-            input(type='submit' value='Create New Book')
+            input(type='submit' value='Update Book')
+    form(action=`/books/${book.id}/delete` method='post' onsubmit="return confirm('Do you really want to delete this book?');")
         p
             a.button(href='/books') Cancel
+        p
+            input(type='submit' value='Delete Book')
