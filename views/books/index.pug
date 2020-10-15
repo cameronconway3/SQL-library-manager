@@ -5,8 +5,6 @@ block content
         p
             a.button(href='books/new') Create New Book
         
-        p= booksPerPage
-
         form(action="/books" method="post")
             p
                 label(for='search') Search Books
@@ -32,6 +30,9 @@ block content
                     td= book.author
                     td= book.genre
                     td= book.year
-    p
-        a.prev(href='#') Previous
-        a.next(href='#') Next
+
+
+    if(booksPerPage)
+        - pagesArr = Array.from(Array(Math.ceil(numOfBooks/booksPerPage)).keys())
+        each num in pagesArr
+            a.button(href=`?page=${num+1}`)= num+1

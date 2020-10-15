@@ -19,9 +19,29 @@ function asyncHandler(cb){
 
 // GET /books - Show the full list of books
 router.get('/', asyncHandler(async (req, res) => {
-    // Get all books in database
-    const books = await Book.findAll({ order: [['createdAt', 'DESC']]});
-    res.render('books/index', {books, booksPerPage: 10});
+    if(req.query.page) {
+        const allBooks = await Book.findAll({order: [['createdAt', 'DESC']]});
+    
+        let numOfBooks = allBooks.length;
+        let booksPerPage = 5;
+    
+        numOfPages = Math.ceil(numOfBooks/booksPerPage)
+    
+        let page = req.query.page;
+            
+        const books = await Book.findAll({ 
+            order: [['createdAt', 'DESC']],
+            offset: ((page-1) * booksPerPage), 
+            limit: booksPerPage
+    
+        });
+    
+        res.render('books/index', {books, booksPerPage: 5, numOfBooks: allBooks.length, title: "Books" });
+    }
+    else {
+        const books = await Book.findAll({order: [['createdAt', 'DESC']], title: "Books" });
+        res.render('books/index', {books});
+    }
 }));
 
 // POST /books - Shows a list of the books matching the search value
@@ -53,7 +73,7 @@ router.post('/', asyncHandler(async (req, res) => {
         } 
     })
     const totalBooks = await Book.findAll({})
-    res.render('books/index', {books, searchedBooks: books.length, totalBooks: totalBooks.length})
+    res.render('books/index', {books, searchedBooks: books.length, totalBooks: totalBooks.length, title: "Books" })
   
 }));
 
