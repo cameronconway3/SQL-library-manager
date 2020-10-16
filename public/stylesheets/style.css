@@ -95,3 +95,17 @@ input[type=text] {
 .error {
   color: rgb(236, 15, 15);
 }
+
+/* /books */
+#searchForm input {
+  margin: 0px;
+}
+.pagination {
+  margin: 20px 0;
+}
+.pagination .pagButton {
+  margin: 5px;
+}
+.filter {
+  margin: 5px;
+}

@@ -2,26 +2,14 @@ extends ../layout
 
 block content
     header
-        p
-            a.button(href='books/new') Create New Book
-        
-        form(action="/books" method="post")
+        form#searchForm(action="/books" method="post")
             p
                 label(for='search') Search Books
+                br
                 input(type='text' name='search' placeholder='Search..')
-                input(type='submit' value='Search')
-
-        if(searchedBooks !== totalBooks)
-            p
-                a.button(href='/books') All Books
-                
-        if(!booksPerPage)
-            p
-                a.button(href="?page=1") Pagination
-        else
-            p
-                a.button(href="/") All Books
-
+                input#searchSubmit(type='submit' value='Search')
+        p
+            a.button(href='books/new') Create New Book
                 
     table
         thead
@@ -39,8 +27,20 @@ block content
                     td= book.genre
                     td= book.year
 
-
     if(booksPerPage)
         - pagesArr = Array.from(Array(Math.ceil(numOfBooks/booksPerPage)).keys())
-        each num in pagesArr
-            a.button(href=`?page=${num+1}`)= num+1
+        div.pagination
+            each num in pagesArr
+                a.button.pagButton(href=`?page=${num+1}`)= num+1
+
+    br
+    if(!booksPerPage && !searchedBooks)
+        p
+            a.button.filter(href="?page=1") Pagination
+    else if (!searchedBooks)
+        p
+            a.button.filter(href="/") All Books
+
+    if(searchedBooks !== totalBooks)
+        p
+            a.button.filter(href='/books') All Books
