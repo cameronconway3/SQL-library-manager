@@ -1,3 +1,8 @@
+/*
+Treehouse Techdegree:
+FSJS Project 8 - SQL Library Manager
+*/
+
 // Host port
 const host = 3000;
 
