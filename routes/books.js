@@ -33,14 +33,13 @@ router.get('/', asyncHandler(async (req, res) => {
             order: [['createdAt', 'DESC']],
             offset: ((page-1) * booksPerPage), 
             limit: booksPerPage
-    
         });
     
         res.render('books/index', {books, booksPerPage: 5, numOfBooks: allBooks.length, title: "Books" });
     }
     else {
-        const books = await Book.findAll({order: [['createdAt', 'DESC']], title: "Books" });
-        res.render('books/index', {books});
+        const books = await Book.findAll({order: [['createdAt', 'DESC']]});
+        res.render('books/index', {books, title: "Books"});
     }
 }));
 
@@ -74,7 +73,6 @@ router.post('/', asyncHandler(async (req, res) => {
     })
     const totalBooks = await Book.findAll({})
     res.render('books/index', {books, searchedBooks: books.length, totalBooks: totalBooks.length, title: "Books" })
-  
 }));
 
 
@@ -121,7 +119,7 @@ router.post('/:id', asyncHandler(async (req, res) => {
             await book.update(req.body)
             res.redirect('/');
         } else {
-            const err = new Error('Sorry, there is no book with that ID. Please try again.');
+            const err = new Error("We can't seem to find the page you're looking for.");
             err.status = 404;
             throw err;
         }

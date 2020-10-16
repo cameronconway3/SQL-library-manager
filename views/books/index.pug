@@ -10,9 +10,18 @@ block content
                 label(for='search') Search Books
                 input(type='text' name='search' placeholder='Search..')
                 input(type='submit' value='Search')
+
         if(searchedBooks !== totalBooks)
             p
                 a.button(href='/books') All Books
+                
+        if(!booksPerPage)
+            p
+                a.button(href="?page=1") Pagination
+        else
+            p
+                a.button(href="/") All Books
+
                 
     table
         thead
@@ -21,10 +30,9 @@ block content
             th Author
             th Genre
             th Year
-        tbody#tbody
-            //- each book in books.slice(0, booksPerPage)
+        tbody
             each book in books
-                tr.bookRow
+                tr
                     td
                         a(href=`books/${book.id}`)= book.title
                     td= book.author

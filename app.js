@@ -5,7 +5,7 @@ const express = require('express');
 const path = require('path');
 var bodyParser = require('body-parser')
 
-
+const routes = require('./routes/index')
 const books = require('./routes/books');
 
 
@@ -32,16 +32,14 @@ app.set('views', path.join(__dirname, 'views'));
  * Routes
  */
 app.use('/books', books);
-app.use('/', (req, res, next) => {
-    res.redirect("/books")
-});
+app.use('/', routes);
 
 /**
  * Handle Errors
  */
 // 404 handler - 404 responses are not the result of an error
 app.use((req, res, next) => {
-    const err = new Error(`This page - ${req.url} doesn't exist.`);
+    const err = new Error(`The page '${req.url}' doesn't exist.`);
     err.status = 404;
     next(err);
 });
