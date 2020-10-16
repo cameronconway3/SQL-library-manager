@@ -3,6 +3,7 @@ extends ../layout
 block content
 
     form(action="/books/new" method="post")
+        //- If 'err' variable is passed display the error
         if (err)
             h2.error Oooops!
             ul.error

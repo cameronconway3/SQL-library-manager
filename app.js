@@ -10,12 +10,11 @@ const express = require('express');
 const path = require('path');
 var bodyParser = require('body-parser')
 
+// Require the route paths
 const routes = require('./routes/index')
 const books = require('./routes/books');
 
-
 const app = express();
-
 
 // Load static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -31,7 +30,6 @@ app.use(bodyParser.json())
 // View engine setup
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
-
 
 /**
  * Routes

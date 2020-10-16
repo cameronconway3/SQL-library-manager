@@ -2,6 +2,7 @@ extends ../layout
 
 block content
     header
+        //- Search form
         form#searchForm(action="/books" method="post")
             p
                 label(for='search') Search Books
@@ -19,6 +20,7 @@ block content
             th Genre
             th Year
         tbody
+            //- For each book display a new table row with relative content, when 'book.title' is clicked take user to 'books/id'
             each book in books
                 tr
                     td
@@ -27,20 +29,27 @@ block content
                     td= book.genre
                     td= book.year
 
+    //- If the pagination variable 'booksPerPage' is passed then create each pagination button
     if(booksPerPage)
+        //- Create an array with a numerical value starting at 0 for each page ('numOfBooks'/'booksPerPage')
         - pagesArr = Array.from(Array(Math.ceil(numOfBooks/booksPerPage)).keys())
         div.pagination
             each num in pagesArr
+                //- Each button link to books?query(num+1), pagesArr starts at 0 
                 a.button.pagButton(href=`?page=${num+1}`)= num+1
 
     br
+    //- If pagination variable 'booksPerPage' and search vairable 'searchBooks' not passed then display 'Pagination' button
     if(!booksPerPage && !searchedBooks)
         p
             a.button.filter(href="?page=1") Pagination
+    //- If pagination variable 'booksPerPage' passed and search vairable 'searchBooks' not passed then display 'All Books' button
     else if (!searchedBooks)
         p
             a.button.filter(href="/") All Books
 
+    //- While the amount of searched books is not equal to the total books then display 'All Books' button, as else all books are already being displayed
+    //- This is only the case when a search is performed and nothing is entered into the search input - all books will be shown
     if(searchedBooks !== totalBooks)
         p
             a.button.filter(href='/books') All Books
