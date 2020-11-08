@@ -1,5 +1,2 @@
-# techdegree-project-8
- Full Stack JavaScript Techdegree - Project 8 - SQL Library Manager
-
-- CSS
-All styles after '/* /books */' added by me
+# SQL Library Manager
+ Storing, retrieving, updating and deleting information on books in a library app using Sequelize (Node.js ORM) with SQLite.
